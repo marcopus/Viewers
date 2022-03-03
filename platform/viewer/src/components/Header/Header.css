@@ -1,5 +1,6 @@
 /* Viewer Route */
 .entry-header {
+  display: none;
   padding: 10px 15px;
   height: var(--top-bar-height);
 }
