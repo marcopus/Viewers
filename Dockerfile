@@ -21,7 +21,7 @@
 
 # Stage 1: Build the application
 # docker build -t ohif/viewer:latest .
-FROM node:15.13.0-slim as builder
+FROM node:12.22.10-slim as builder
 
 RUN mkdir /usr/src/app
 WORKDIR /usr/src/app
