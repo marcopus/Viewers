@@ -6,27 +6,44 @@ const { urlUtil: UrlUtil } = OHIF.utils;
 // Dynamic Import Routes (CodeSplitting)
 const IHEInvokeImageDisplay = asyncComponent(() =>
   retryImport(() =>
-    import(/* webpackChunkName: "IHEInvokeImageDisplay" */ './IHEInvokeImageDisplay.js')
+    import(
+      /* webpackChunkName: "IHEInvokeImageDisplay" */ './IHEInvokeImageDisplay.js'
+    )
   )
 );
 const ViewerRouting = asyncComponent(() =>
-  retryImport(() => import(/* webpackChunkName: "ViewerRouting" */ './ViewerRouting.js'))
+  retryImport(() =>
+    import(/* webpackChunkName: "ViewerRouting" */ './ViewerRouting.js')
+  )
 );
 
 const StudyListRouting = asyncComponent(() =>
-  retryImport(() => import(
-    /* webpackChunkName: "StudyListRouting" */ '../studylist/StudyListRouting.js'
-  ))
+  retryImport(() =>
+    import(
+      /* webpackChunkName: "StudyListRouting" */ '../studylist/StudyListRouting.js'
+    )
+  )
 );
 const StandaloneRouting = asyncComponent(() =>
-  retryImport(() => import(
-    /* webpackChunkName: "ConnectedStandaloneRouting" */ '../connectedComponents/ConnectedStandaloneRouting.js'
-  ))
+  retryImport(() =>
+    import(
+      /* webpackChunkName: "ConnectedStandaloneRouting" */ '../connectedComponents/ConnectedStandaloneRouting.js'
+    )
+  )
 );
 const ViewerLocalFileData = asyncComponent(() =>
-  retryImport(() => import(
-    /* webpackChunkName: "ViewerLocalFileData" */ '../connectedComponents/ViewerLocalFileData.js'
-  ))
+  retryImport(() =>
+    import(
+      /* webpackChunkName: "ViewerLocalFileData" */ '../connectedComponents/ViewerLocalFileData.js'
+    )
+  )
+);
+const ViewerDicomFileData = asyncComponent(() =>
+  retryImport(() =>
+    import(
+      /* webpackChunkName: "ViewerDicomFileData" */ '../connectedComponents/ViewerDicomFileData.js'
+    )
+  )
 );
 
 const reload = () => window.location.reload();
@@ -54,7 +71,11 @@ const ROUTES_DEF = {
     },
     IHEInvokeImageDisplay: {
       path: '/IHEInvokeImageDisplay',
-      component: IHEInvokeImageDisplay
+      component: IHEInvokeImageDisplay,
+    },
+    dicom: {
+      path: '/dicom',
+      component: ViewerDicomFileData,
     },
   },
   gcloud: {
