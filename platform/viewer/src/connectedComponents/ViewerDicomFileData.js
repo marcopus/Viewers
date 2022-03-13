@@ -57,16 +57,26 @@ class ViewerDicomFileData extends Component {
     });
   };
 
-  fetchDataFromApi = async (url, hostLocationOrigin) => {
-    let response = await fetch(url);
+  fetchDataFromApi = async dataUrl => {
+    let numObjects = dataUrl.searchParams.get('number_of_objects');
+    let objString = Array.from(
+      { length: numObjects },
+      (_, i) => '&object[i]=' + dataUrl.searchParams.get('object[i]')
+    );
+    let targetUrl = dataUrl.href + objString;
+
+    let response = await fetch(targetUrl);
     let result = await response.json();
+
     let image_urls = [];
     result.series.map(series => {
       series.image_url = series.image_url.map(
-        instance_url => hostLocationOrigin + instance_url
+        instance_url =>
+          dataUrl.searchParams.get('hostLocationOrigin') + instance_url
       );
       image_urls = image_urls.concat(series.image_url);
     });
+
     let files = await Promise.all(
       image_urls.map(async image_url => {
         let response = await fetch(image_url);
@@ -82,15 +92,9 @@ class ViewerDicomFileData extends Component {
   async componentDidMount() {
     try {
       let { search } = this.props.location;
+      let url = new URL(search.split('?dicomlist=')[1]);
 
-      // Remove ? prefix which is included for some reason
-      search = search.slice(1, search.length);
-      const query = qs.parse(search);
-
-      let files = await this.fetchDataFromApi(
-        query.dicomlist + '&object[0]=' + query['object[0]'],
-        query.hostLocationOrigin
-      );
+      let files = await this.fetchDataFromApi(url);
 
       this.setState({ loading: true });
 
