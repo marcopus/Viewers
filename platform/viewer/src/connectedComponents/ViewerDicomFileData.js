@@ -59,11 +59,17 @@ class ViewerDicomFileData extends Component {
 
   fetchDataFromApi = async dataUrl => {
     let numObjects = dataUrl.searchParams.get('number_of_objects');
-    let objString = Array.from(
+    let objStringArray = Array.from(
       { length: numObjects },
-      (_, i) => '&object[i]=' + dataUrl.searchParams.get('object[i]')
+      (_, i) =>
+        `&object[${i.toString()}]=` +
+        dataUrl.searchParams.get(`object[${i.toString()}]`)
     );
-    let targetUrl = dataUrl.href + objString;
+    let targetUrl =
+      dataUrl.origin +
+      dataUrl.pathname +
+      `?number_of_objects=${numObjects}` +
+      objStringArray.join('');
 
     let response = await fetch(targetUrl);
     let result = await response.json();
